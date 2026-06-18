@@ -1,0 +1,6 @@
+{
+  "name": "Rentora — Global Marketplace",
+  "description": "A high-end rental marketplace for homes, cars, offices and more with global city support and AI assistant.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

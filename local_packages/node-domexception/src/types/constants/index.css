@@ -1,0 +1,42 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@300;400;500;600&display=swap');
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-syne: "Syne", sans-serif;
+  --color-brand: #2563eb;
+  --color-surface: #ffffff;
+  --color-bento-bg: #f8fafc;
+  --color-bento-border: #e2e8f0;
+  --color-bento-text: #0f172a;
+  --color-bento-muted: #64748b;
+
+  --color-dark-bg: #020617;
+  --color-dark-surface: #0f172a;
+  --color-dark-border: #1e293b;
+  --color-dark-text: #f8fafc;
+  --color-dark-muted: #94a3b8;
+}
+
+@layer base {
+  body {
+    @apply font-sans bg-bento-bg text-bento-text transition-colors duration-300;
+  }
+  
+  .dark body {
+    @apply bg-dark-bg text-dark-text;
+  }
+}
+
+.font-syne {
+  font-family: var(--font-syne);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

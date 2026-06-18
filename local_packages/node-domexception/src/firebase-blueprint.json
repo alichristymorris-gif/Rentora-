@@ -1,0 +1,188 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile information",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Full name of the user" },
+        "email": { "type": "string", "description": "Email address" },
+        "role": { "type": "string", "enum": ["renter", "owner", "both"], "description": "User role" },
+        "phone": { "type": "string", "description": "Contact phone number" },
+        "city": { "type": "string", "description": "City of residence" },
+        "country": { "type": "string", "description": "Country of residence" },
+        "joinDate": { "type": "string", "description": "Date user joined" },
+        "online": { "type": "boolean", "description": "Whether user is currently online" },
+        "lastSeen": { "type": "number", "description": "Last active timestamp" },
+        "blockedUsers": { "type": "array", "description": "List of blocked user UIDs" },
+        "phoneVerified": { "type": "boolean", "description": "Whether phone is verified" }
+      },
+      "required": ["name", "email"]
+    },
+    "Listing": {
+      "title": "Listing",
+      "description": "A rental listing",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string", "description": "Title of the listing" },
+        "category": { "type": "string", "description": "Category of the item" },
+        "price": { "type": "number", "description": "Price value" },
+        "currency": { "type": "string", "description": "Currency code" },
+        "period": { "type": "string", "description": "Rental period" },
+        "city": { "type": "string", "description": "City location" },
+        "country": { "type": "string", "description": "Country location" },
+        "flag": { "type": "string", "description": "Country flag emoji" },
+        "ownerName": { "type": "string", "description": "Name of the owner" },
+        "ownerContact": { "type": "string", "description": "Contact info of the owner" },
+        "description": { "type": "string", "description": "Detailed description" },
+        "tags": { "type": "array", "description": "Search tags" },
+        "isNew": { "type": "boolean", "description": "Flag for new listings" },
+        "isHot": { "type": "boolean", "description": "Flag for popular listings" },
+        "ownerId": { "type": "string", "description": "UID of the owner" },
+        "createdAt": { "type": "number", "description": "Server timestamp" },
+        "status": { "type": "string", "enum": ["available", "rented", "pending"], "description": "Listing status" },
+        "images": { "type": "array", "description": "List of image URLs" }
+      },
+      "required": ["title", "category", "price", "city", "ownerId", "createdAt", "status"]
+    },
+    "ChatSession": {
+      "title": "ChatSession",
+      "description": "A private message session between two users",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "participants": { "type": "array" },
+        "participantData": { "type": "object" },
+        "lastMessage": { "type": "string" },
+        "lastMessageAt": { "type": "number" },
+        "unreadCount": { "type": "object" },
+        "typing": { "type": "object" },
+        "blocked": { "type": "array" },
+        "pinnedBy": { "type": "array" }
+      },
+      "required": ["id", "participants", "lastMessageAt"]
+    },
+    "UserMessage": {
+      "title": "UserMessage",
+      "description": "A direct text, audio or image message",
+      "type": "object",
+      "properties": {
+        "senderId": { "type": "string" },
+        "content": { "type": "string" },
+        "createdAt": { "type": "number" },
+        "read": { "type": "boolean" },
+        "type": { "type": "string", "enum": ["text", "voice", "image", "file"] },
+        "fileUrl": { "type": "string" },
+        "duration": { "type": "number" },
+        "edited": { "type": "boolean" }
+      },
+      "required": ["senderId", "content", "createdAt", "read"]
+    },
+    "CallSession": {
+      "title": "CallSession",
+      "description": "A video or audio WebRTC handshaking session",
+      "type": "object",
+      "properties": {
+        "callerId": { "type": "string" },
+        "callerName": { "type": "string" },
+        "callerPhoto": { "type": "string" },
+        "receiverId": { "type": "string" },
+        "status": { "type": "string", "enum": ["ringing", "accepted", "rejected", "ended", "reconnecting"] },
+        "type": { "type": "string", "enum": ["audio", "video"] },
+        "offer": { "type": "object" },
+        "answer": { "type": "object" },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["callerId", "receiverId", "status", "type", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Collection of user profiles"
+    },
+    "/listings/{listingId}": {
+      "schema": "Listing",
+      "description": "Global rental listings"
+    },
+    "/users/{userId}/savedListings/{listingId}": {
+      "schema": {
+        "title": "SavedItem",
+        "description": "Reference to a saved listing",
+        "type": "object",
+        "properties": {
+          "addedAt": { "type": "number" }
+        }
+      },
+      "description": "Subcollection of saved listings for a user"
+    },
+    "/users/{userId}/favoriteOwners/{ownerId}": {
+      "schema": {
+        "title": "FavoriteOwner",
+        "description": "Reference to a favorite owner",
+        "type": "object",
+        "properties": {
+          "addedAt": { "type": "number" }
+        }
+      },
+      "description": "Subcollection of favorite owners for a user"
+    },
+    "/users/{userId}/reviews/{reviewId}": {
+      "schema": {
+        "title": "Review",
+        "description": "A review for a user",
+        "type": "object",
+        "properties": {
+          "reviewerId": { "type": "string" },
+          "reviewerName": { "type": "string" },
+          "rating": { "type": "number" },
+          "comment": { "type": "string" },
+          "createdAt": { "type": "number" }
+        }
+      },
+      "description": "Subcollection of reviews for a user (either as owner or renter)"
+    },
+    "/reports/{reportId}": {
+      "schema": {
+        "title": "Report",
+        "description": "A report about a listing or user",
+        "type": "object",
+        "properties": {
+          "reporterId": { "type": "string" },
+          "targetType": { "type": "string", "enum": ["listing", "user"] },
+          "targetId": { "type": "string" },
+          "reason": { "type": "string" },
+          "details": { "type": "string" },
+          "status": { "type": "string", "enum": ["pending", "resolved", "dismissed"] },
+          "createdAt": { "type": "number" }
+        }
+      },
+      "description": "Collection of reports for admin moderation"
+    },
+    "/chats/{chatId}": {
+      "schema": "ChatSession",
+      "description": "Interactive chat conversations between members"
+    },
+    "/chats/{chatId}/messages/{messageId}": {
+      "schema": "UserMessage",
+      "description": "Threaded messages under private conversation rooms"
+    },
+    "/calls/{callId}": {
+      "schema": "CallSession",
+      "description": "Active WebRTC audio/video calls setup and status"
+    },
+    "/calls/{callId}/candidates/{candidateId}": {
+      "schema": {
+        "title": "CallCandidate",
+        "description": "A WebRTC trickle ICE candidate exchange",
+        "type": "object",
+        "properties": {
+          "type": { "type": "string", "enum": ["caller", "receiver"] },
+          "candidate": { "type": "object" },
+          "createdAt": { "type": "number" }
+        }
+      },
+      "description": "RTC ICE candidate messages for real-time peer negotiation"
+    }
+  }
+}
