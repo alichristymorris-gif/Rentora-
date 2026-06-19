@@ -1,5 +1,5 @@
 import React from 'react';
-import { Plus, LayoutDashboard, Sun, Moon } from 'lucide-react';
+import { Plus, LayoutDashboard, Sun, Moon, Bot } from 'lucide-react';
 import { Logo } from './ui/Logo';
 import { AppUser } from '../types';
 import { cn } from '../lib/utils';
@@ -47,6 +47,15 @@ export function NavBar({
         >
           Dashboard
         </button>
+        {user && user.role === 'admin' && (
+          <button
+            onClick={() => setActiveTab('agents')}
+            className={cn("flex items-center gap-1.5 text-hover text-xs uppercase tracking-wider font-bold transition-all", activeTab === 'agents' ? "text-brand" : "text-bento-muted dark:text-dark-muted hover:text-brand dark:hover:text-brand")}
+          >
+            <Bot size={14} />
+            Agents
+          </button>
+        )}
       </div>
 
       <div className="flex items-center gap-2 md:gap-3">

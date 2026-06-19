@@ -311,15 +311,35 @@ export function Auth({ onGoogleLogin }: AuthProps) {
 
         {mode !== 'forgot' && (
           <>
-            <div className="relative my-6">
+            <div className="relative my-5">
               <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-slate-100 dark:border-dark-border"></div></div>
-              <div className="relative flex justify-center text-[9px] uppercase font-black text-slate-300 dark:text-dark-muted tracking-widest"><span className="bg-white dark:bg-dark-surface px-4 transition-colors">OR</span></div>
+              <div className="relative flex justify-center text-[9px] uppercase font-black text-slate-300 dark:text-dark-muted tracking-widest"><span className="bg-white dark:bg-dark-surface px-4 transition-colors">OR INSTANT DIRECT ACCESS</span></div>
+            </div>
+
+            <div className="p-4 bg-amber-500/10 dark:bg-amber-500/5 hover:bg-amber-500/15 text-slate-800 dark:text-amber-250 text-xs font-semibold rounded-2xl border border-amber-500/20 leading-relaxed mb-4 text-left transition-colors">
+              <span className="text-amber-600 dark:text-amber-400 font-extrabold flex items-center gap-1.5 mb-1.5">
+                ⚡ Super Quick Sandbox Bypass (Skip OTP & Password)
+              </span>
+              <p className="text-[11px] text-slate-500 dark:text-zinc-400 font-medium font-sans mb-3 leading-relaxed">
+                Aap ko mobile per SMS / OTP ya strict passwords ki zaroorat nahi hai. Apni email uper likhein aur niche ye button dabayein taake aap direct dashboard mein enter ho sakein!
+              </p>
+              <button 
+                onClick={() => {
+                  if (typeof (window as any).__onLocalBypass === 'function') {
+                    (window as any).__onLocalBypass(email || '1286muhammadali@gmail.com', role || 'admin');
+                  }
+                }}
+                type="button"
+                className="w-full py-3 px-4 bg-amber-600 hover:bg-amber-550 text-white rounded-xl font-bold tracking-tight text-center text-xs cursor-pointer transition-all active:scale-95 shadow-md shadow-amber-600/10 flex items-center justify-center gap-1.5"
+              >
+                🚀 Direct Sandbox Entry
+              </button>
             </div>
 
             <button 
               onClick={onGoogleLogin}
               type="button"
-              className="w-full flex items-center justify-center gap-3 bg-white dark:bg-slate-800 border border-slate-100 dark:border-dark-border text-slate-900 dark:text-white py-4.5 rounded-[22px] font-black tracking-tight hover:bg-slate-50 dark:hover:bg-slate-700 transition-all active:scale-95 text-xs shadow-sm"
+              className="w-full flex items-center justify-center gap-3 bg-white dark:bg-slate-800 border border-slate-100 dark:border-dark-border text-slate-900 dark:text-white py-4.5 rounded-[22px] font-black tracking-tight hover:bg-slate-50 dark:hover:bg-slate-700 transition-all active:scale-95 text-xs shadow-sm mb-2"
             >
               <Globe size={16} className="text-blue-600" />
               Sign in with Google Account

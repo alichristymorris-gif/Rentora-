@@ -15,7 +15,7 @@ import { supabase } from '../../lib/supabase';
 import { AppUser, Listing } from '../../types';
 import { TrustScore } from '../ui/TrustScore';
 import { cn } from '../../lib/utils';
-import { AgentPanel } from './AgentPanel';
+import { AgentPanel } from '../AgentPanel';
 
 interface AdminDashboardProps {
   user: AppUser;

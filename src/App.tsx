@@ -22,6 +22,7 @@ import { Footer } from './components/Footer';
 import { AboutPage } from './components/AboutPage';
 import { ContactPage } from './components/ContactPage';
 import { PrivacyPage } from './components/PrivacyPage';
+import { AgentPanel } from './components/AgentPanel';
 
 // Calling & Communication context
 import { CallProvider } from './context/CallContext';
@@ -602,6 +603,14 @@ export default function App() {
         {activeTab === 'about' && <AboutPage />}
         {activeTab === 'contact' && <ContactPage />}
         {activeTab === 'privacy' && <PrivacyPage />}
+        {activeTab === 'agents' && user && user.role === 'admin' && (
+          <AgentPanel user={user} />
+        )}
+        {activeTab === 'agents' && (!user || user.role !== 'admin') && (
+          <div className="flex items-center justify-center min-h-[60vh] text-slate-400 text-sm">
+            🔒 Ye panel sirf admin ke liye hai. Admin account se login karo.
+          </div>
+        )}
       </main>
 
       <Footer setActiveTab={setActiveTab} setSearchCategory={setSearchCategory} />
